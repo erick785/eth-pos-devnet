@@ -26,8 +26,8 @@ services:
       - 30303:30303
       - 30303:30303/udp
     volumes:
-      - ./execution:/execution
-      - ./execution/geth_password.txt:/execution/geth_password.txt
+      - ./server/execution:/execution
+      - ./server/execution/geth_password.txt:/execution/geth_password.txt
       - ./jwtsecret:/execution/jwtsecret
 
   # Runs a Prysm beacon chain from a specified genesis state created in the previous step
@@ -43,6 +43,7 @@ services:
       - --interop-genesis-state=/consensus/genesis.ssz
       - --interop-eth1data-votes
       - --bootstrap-node=
+      - --contract-deployment-block=0
       # The chain configuration file used for setting up Prysm
       - --chain-config-file=/consensus/config.yml
       - --config-file=/consensus/config.yml
@@ -66,7 +67,7 @@ services:
       - 13000:13000
       - 12000:12000/udp
     volumes:
-      - ./consensus:/consensus
+      - ./server/consensus:/consensus
       - ./jwtsecret:/execution/jwtsecret
 
   # We run a validator client with 64, deterministically-generated keys that match
@@ -86,4 +87,4 @@ services:
     ports:
       - 8081:8081
     volumes:
-      - ./consensus:/consensus
+      - ./server/consensus:/consensus

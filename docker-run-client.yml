@@ -22,13 +22,13 @@ services:
       - --mine
       - --bootnodes=$bootgeth
     ports:
-      - 8551:8551
-      - 8545:8545
-      - 30303:30303
-      - 30303:30303/udp
+      - 8551:8552
+      - 8545:8546
+      - 30303:30304
+      - 30303:30304/udp
     volumes:
-      - ./execution:/execution
-      - ./execution/geth_password.txt:/execution/geth_password.txt
+      - ./client/execution:/execution
+      - ./clinet/execution/geth_password.txt:/execution/geth_password.txt
       - ./jwtsecret:/execution/jwtsecret
 
   # Runs a Prysm beacon chain from a specified genesis state created in the previous step
@@ -42,6 +42,7 @@ services:
       - --min-sync-peers=1
       - --interop-genesis-state=/consensus/genesis.ssz
       - --interop-eth1data-votes
+      - --contract-deployment-block=0
       - --bootstrap-node=$bootbeacon
       # The chain configuration file used for setting up Prysm
       - --chain-config-file=/consensus/config.yml
@@ -49,7 +50,7 @@ services:
       - --rpc-host=0.0.0.0
       - --grpc-gateway-host=0.0.0.0
       - --monitoring-host=0.0.0.0
-      - --execution-endpoint=http://geth:8551
+      - --execution-endpoint=http://geth:8552
       - --chain-id=32382
       - --accept-terms-of-use
       - --jwt-secret=/execution/jwtsecret
@@ -59,29 +60,30 @@ services:
       geth:
         condition: service_started
     ports:
-      - 4000:4000
-      - 3500:3500
-      - 8080:8080
-      - 13000:13000
-      - 12000:12000/udp
+      - 4000:4001
+      - 3500:3501
+      - 8080:8081
+      - 13000:13001
+      - 12000:12001/udp
     volumes:
-      - ./consensus:/consensus
+      - ./client/consensus:/consensus
       - ./jwtsecret:/execution/jwtsecret
 
   # We run a validator client
   validator:
     image: "gcr.io/prysmaticlabs/prysm/validator:latest"
     command:
-      - --beacon-rpc-provider=beacon-chain:4000
+      - --beacon-rpc-provider=beacon-chain:4001
       - --datadir=/consensus/validatordata
       - --accept-terms-of-use
-      - --interop-num-validators=64
-      - --interop-start-index=0
       - --chain-config-file=/consensus/config.yml
+      - --wallet-dir=/wallet_dir 
+      - --wallet-password-file=/wallet_dir/password.txt
     depends_on:
       beacon-chain:
         condition: service_started
     ports:
-      - 8081:8081
+      - 8081:8082
     volumes:
-      - ./consensus:/consensus
+      - ./client/consensus:/consensus
+      - ./wallet_dir:/wallet_dir

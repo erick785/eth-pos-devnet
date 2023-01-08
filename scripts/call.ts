@@ -4,35 +4,37 @@ import * as fs from "fs";
 
 async function main() {
 
-  const [call, newValidator] = await ethers.getSigners();
+  const [call] = await ethers.getSigners();
 
   console.log("Call address:", call.address);
-  console.log("New validator address:", newValidator.address);
-
-  // call transfer to new validator 33 eth
-  await (await call.sendTransaction({
-    to: newValidator.address,
-    value: ethers.utils.parseEther("33"), // Sends exactly 1.0 ether
-  })).wait();
 
   console.log("Call balance:", (await call.getBalance()).toString());
-  console.log("Call balance:", (await newValidator.getBalance()).toString());
+
 
 
   const DepositContract = (await ethers.getContractFactory("DepositContract")).attach("0x4242424242424242424242424242424242424242");
 
+  console.log("DepositContract address:", DepositContract.address);
+
+  console.log("root", await DepositContract.get_deposit_root());
+
+  console.log("count", await DepositContract.get_deposit_count());
+
+  console.log("DepositContract balance:", (await ethers.provider.getBalance(DepositContract.address)).toString());
+
+
   // 读取文件中的数据
-  const data = fs.readFileSync('./scripts/validator.json', 'utf-8');
+  const data = fs.readFileSync('./validator_keys/deposit_data-1672649140.json', 'utf-8');
 
   // 将数据转换为json对象 
   const validator = JSON.parse(data);
 
   // call deposit
   const depositData = {
-    pubkey: validator.pubkey,
-    withdrawal_credentials: validator.withdrawal_credentials,
-    signature: validator.signature,
-    deposit_data_root: validator.deposit_data_root,
+    pubkey: "0x" + validator[0].pubkey,
+    withdrawal_credentials: "0x" + validator[0].withdrawal_credentials,
+    signature: "0x" + validator[0].signature,
+    deposit_data_root: "0x" + validator[0].deposit_data_root,
   };
 
   console.log("depositData:", depositData);

@@ -3,6 +3,12 @@ consensus/genesis.ssz
 consensus/validatordata
 execution/geth
 execution/geth.ipc
+
+server/consensus/beacondata
+server/consensus/genesis.ssz
+server/consensus/validatordata
+server/execution/geth
+server/execution/geth.ipc
 .idea/
 
 node_modules

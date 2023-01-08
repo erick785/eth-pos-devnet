@@ -20,7 +20,7 @@ sleep 5
 docker compose -f docker-run.yml up validator -d
 
 # Write node info
-scripts/collectNodeInfo.sh > .env
+sh collectNodeInfo.sh > .netEnv
 cp server/consensus/genesis.ssz client/consensus/
 
 # Show Log Commands

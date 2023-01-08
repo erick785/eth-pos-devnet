@@ -5,7 +5,7 @@
     "test": "npx hardhat test",
     "clean": "npx hardhat clean",
     "size": "npx hardhat size-contracts",
-    "deploy_acert": "npx hardhat --network env run scripts/call.ts"
+    "call": "npx hardhat --network env run scripts/call.ts"
   },
   "devDependencies": {
     "@nomicfoundation/hardhat-toolbox": "^2.0.0",
