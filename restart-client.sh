@@ -45,8 +45,9 @@ source .entEnv
 
 # ./deposit --language English new-mnemonic --mnemonic_language English --chain mainnet || echo Skipped Depost
 
-# yarn call
+yarn call
 
+docker compose -f docker-initialize-client.yml run --rm validator-accounts-import
 
 # issue champion exchange actor copper valve nurse thrive enter shed inject virtual cereal point faint helmet fossil corn then sting retreat case piece robust
 
@@ -57,9 +58,6 @@ sleep 5
 docker compose --env-file .netEnv -f docker-run-client.yml up beacon-chain -d
 sleep 5
 docker compose --env-file .netEnv  -f docker-run-client.yml up validator -d
-
-# Write node info
-#scripts/collectNodeInfo.sh > /var/www/html/adigium/nodeinfo.txt
 
 # Show Log Commands
 echo You can watch the log file
