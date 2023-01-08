@@ -9,6 +9,12 @@ server/consensus/genesis.ssz
 server/consensus/validatordata
 server/execution/geth
 server/execution/geth.ipc
+
+client/consensus/beacondata
+client/consensus/genesis.ssz
+client/consensus/validatordata
+client/execution/geth
+client/execution/geth.ipc
 .idea/
 
 node_modules

@@ -1,10 +1,8 @@
 set -e
 
-docker compose down
+rm -rf client/consensus/beacondata/ client/consensus/genesis.ssz client/consensus/validatordata/ client/execution/geth/ client/execution/keystore/
 
-# Clean Folders
-#git clean -fxd
-rm -rf client/consensus/beacondata/ client/consensus/genesis.ssz client/consensus/validatordata/ client/execution/geth/
+cp server/consensus/genesis.ssz client/consensus/
 
 # Initialize Genesis
 docker compose -f docker-initialize-client.yml run --rm geth-genesis
@@ -26,10 +24,8 @@ docker compose -f docker-initialize-client.yml run --rm geth-account
 #account_geth_address=`cat execution/geth_account.txt | grep "Public address of the key"|sed s/'.*\: *'//g`
 
 # Add account to .env file
-sed -i /^account_geth_address/d .netEnv
-echo account_geth_address=$account_geth_address >> .entEnv
-
-source .entEnv
+#sed -i /^account_geth_address/d .netEnv
+echo account_geth_address=$account_geth_address >> .netEnv
 
 # Make Deposit
 #wget https://github.com/ethereum/staking-deposit-cli/releases/download/v2.3.0/staking_deposit-cli-76ed782-linux-amd64.tar.gz
@@ -45,7 +41,11 @@ source .entEnv
 
 # ./deposit --language English new-mnemonic --mnemonic_language English --chain mainnet || echo Skipped Depost
 
+# deposit
 yarn call
+sleep 10
+
+docker compose -f docker-initialize-client.yml run --rm validator-wallet-create
 
 docker compose -f docker-initialize-client.yml run --rm validator-accounts-import
 
@@ -53,11 +53,11 @@ docker compose -f docker-initialize-client.yml run --rm validator-accounts-impor
 
 # Run Nodes
 #docker compose -f docker-run.yml up -d
-docker compose --env-file .netEnv -f docker-run-client.yml up geth -d
+docker compose --env-file .netEnv -p eth-pos-devnet-client -f docker-run-client.yml up geth -d
 sleep 5
-docker compose --env-file .netEnv -f docker-run-client.yml up beacon-chain -d
+docker compose --env-file .netEnv  -p eth-pos-devnet-client -f docker-run-client.yml up beacon-chain -d
 sleep 5
-docker compose --env-file .netEnv  -f docker-run-client.yml up validator -d
+docker compose --env-file .netEnv   -p eth-pos-devnet-client -f docker-run-client.yml up validator -d
 
 # Show Log Commands
 echo You can watch the log file

@@ -24,7 +24,7 @@ async function main() {
 
 
   // 读取文件中的数据
-  const data = fs.readFileSync('./validator_keys/deposit_data-1672649140.json', 'utf-8');
+  const data = fs.readFileSync('./validator_keys/deposit_data-1673168019.json', 'utf-8');
 
   // 将数据转换为json对象 
   const validator = JSON.parse(data);

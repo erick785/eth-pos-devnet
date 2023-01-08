@@ -42,3 +42,13 @@ services:
       - ./validator_keys:/validator_keys
       - ./wallet_dir:/wallet_dir
       #- ./wallet_dir/password.txt:/wallet_dir/password.txt
+  
+  validator-wallet-create:
+    image: "gcr.io/prysmaticlabs/prysm/validator:latest"
+    command:
+      - wallet
+      - create
+      - --wallet-dir=/wallet_dir
+      - --wallet-password-file=/wallet_dir/password.txt
+    volumes:
+      - ./wallet_dir:/wallet_dir
