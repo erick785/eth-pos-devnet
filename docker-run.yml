@@ -39,7 +39,7 @@ services:
     command:
       - --datadir=/consensus/beacondata
       # No peers to sync with in this testnet, so setting to 0
-      - --min-sync-peers=1
+      - --min-sync-peers=0
       - --interop-genesis-state=/consensus/genesis.ssz
       - --interop-eth1data-votes
       - --bootstrap-node=

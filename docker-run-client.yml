@@ -20,7 +20,7 @@ services:
       - --unlock=$account_geth_address
       - --password=/execution/geth_password.txt
       - --syncmode=full
-      - --mine
+      #- --mine
       - --bootnodes=$bootgeth
     ports:
       - 8552:8551
@@ -44,8 +44,9 @@ services:
       - --contract-deployment-block=0
       - --deposit-contract=0x4242424242424242424242424242424242424242
       - --bootstrap-node=$bootbeacon
-      - --interop-eth1data-votes
-      - --interop-genesis-state=/consensus/genesis.ssz
+      - --genesis-state=/consensus/genesis.ssz
+      # - --interop-eth1data-votes
+      # - --interop-genesis-state=/consensus/genesis.ssz
       # The chain configuration file used for setting up Prysm
       - --chain-config-file=/consensus/config.yml
       - --config-file=/consensus/config.yml
@@ -53,14 +54,13 @@ services:
       - --grpc-gateway-host=0.0.0.0
       - --monitoring-host=0.0.0.0
       - --execution-endpoint=http://geth:8551
-      - --verbosity=debug
+      #- --verbosity=debug
       - --chain-id=32382
       - --accept-terms-of-use
       - --jwt-secret=/execution/jwtsecret
       - --suggested-fee-recipient=$account_geth_address
-      - --p2p-host-ip=$server_ip
+      #- --p2p-host-ip=$server_ip
       - --peer=$peer
-      #- --peer=/ip4/192.168.65.2/tcp/13000/p2p/16Uiu2HAm5P5YpnQLtb15v799yDsQHavorU13u7MpWWpxQM5Na52w
     depends_on:
       geth:
         condition: service_started
