@@ -7,7 +7,6 @@ services:
     volumes:
       - ./server/execution:/execution
       - ./server/execution/genesis.json:/execution/genesis.json
-
   geth-account:
     image: "ethereum/client-go:latest"
     command: --datadir=/execution account import --password execution/geth_password.txt execution/account_geth_privateKey

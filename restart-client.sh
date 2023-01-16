@@ -2,10 +2,12 @@ set -e
 
 rm -rf client/consensus/beacondata/ client/consensus/genesis.ssz client/consensus/validatordata/ client/execution/geth/ client/execution/keystore/
 
-cp server/consensus/genesis.ssz client/consensus/
+cp server/consensus/genesis.ssz client/consensus/genesis.ssz
 
 # Initialize Genesis
 docker compose -f docker-initialize-client.yml run --rm geth-genesis
+
+#docker compose -f docker-initialize-client.yml run --rm create-beacon-chain-genesis
 
 # Create Account
 echo account_geth_address=0xF359C69a1738F74C044b4d3c2dEd36c576A34d9f > client/execution/account_geth.txt
@@ -42,10 +44,10 @@ echo account_geth_address=$account_geth_address >> .netEnv
 # ./deposit --language English new-mnemonic --mnemonic_language English --chain mainnet || echo Skipped Depost
 
 # deposit
-yarn call
-sleep 10
+# yarn call
+# sleep 10
 
-docker compose -f docker-initialize-client.yml run --rm validator-wallet-create
+#docker compose -f docker-initialize-client.yml run --rm validator-wallet-create
 
 docker compose -f docker-initialize-client.yml run --rm validator-accounts-import
 
@@ -57,7 +59,7 @@ docker compose --env-file .netEnv -p eth-pos-devnet-client -f docker-run-client.
 sleep 5
 docker compose --env-file .netEnv  -p eth-pos-devnet-client -f docker-run-client.yml up beacon-chain -d
 sleep 5
-docker compose --env-file .netEnv   -p eth-pos-devnet-client -f docker-run-client.yml up validator -d
+docker compose --env-file .netEnv  -p eth-pos-devnet-client -f docker-run-client.yml up validator -d
 
 # Show Log Commands
 echo You can watch the log file
@@ -66,5 +68,6 @@ echo "	docker logs eth-pos-devnet-beacon-chain-1 -f"
 echo "	docker logs eth-pos-devnet-validator-1 -f"
 
 echo You can check the beacon-chain status
+echo "  curl localhost:8080/healthz"
 echo "	curl localhost:8080/p2p"
 echo "	curl localhost:3500/eth/v1/node/syncing"

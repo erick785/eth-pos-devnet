@@ -39,7 +39,7 @@ services:
     command:
       - --datadir=/consensus/beacondata
       # No peers to sync with in this testnet, so setting to 0
-      - --min-sync-peers=0
+      - --min-sync-peers=1
       - --interop-genesis-state=/consensus/genesis.ssz
       - --interop-eth1data-votes
       - --bootstrap-node=
@@ -56,7 +56,7 @@ services:
       - --accept-terms-of-use
       - --jwt-secret=/execution/jwtsecret
       - --suggested-fee-recipient=0x123463a4b065722e99115d6c222f267d9cabb524
-      - --p2p-host-ip=45.32.169.236
+      - --p2p-host-ip=192.168.65.2
     depends_on:
       geth:
         condition: service_started

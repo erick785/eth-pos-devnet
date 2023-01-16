@@ -2,7 +2,7 @@
 #         && echo server_ip=192.168.65.2
 # echo
 
-server_ip=`curl ifconfig.me 2>/dev/null` \
+server_ip=192.168.65.2 \
         && echo server_ip=192.168.65.2
 echo
 
@@ -14,9 +14,10 @@ bootbeacon=`curl http://localhost:8080/p2p 2>/dev/null | grep self= | sed s/',\\
         && echo bootbeacon=$bootbeacon
 echo
 
-# peer=`curl http://localhost:8080/p2p 2>/dev/null | grep self= | sed s/',\\'/'ip4.*'//g | sed s/'self='//g` \
-#         && echo peer=$peer
-# echo
+peer=`curl http://localhost:8080/p2p 2>/dev/null | grep self= | sed s/'.*ip4'//g | sed s/'self='//g` \
+        && echo peer=/ip4$peer
+echo
+
 
 
 # bootipfs=/ip4/${server_ip}/tcp/4001/ipfs/`ipfs id|grep \"ID\"|sed s/'.*\"ID\": \"'//|sed s/'\",$'//` \
