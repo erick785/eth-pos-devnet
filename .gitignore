@@ -40,3 +40,7 @@ typechain-types
 cache
 artifacts
 
+
+dist
+
+logs

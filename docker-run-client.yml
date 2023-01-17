@@ -40,13 +40,13 @@ services:
     image: "gcr.io/prysmaticlabs/prysm/beacon-chain:latest"
     command:
       - --datadir=/consensus/beacondata
-      - --min-sync-peers=1
+      - --min-sync-peers=0
       - --contract-deployment-block=0
       - --deposit-contract=0x4242424242424242424242424242424242424242
       - --bootstrap-node=$bootbeacon
-      - --genesis-state=/consensus/genesis.ssz
-      # - --interop-eth1data-votes
-      # - --interop-genesis-state=/consensus/genesis.ssz
+      # - --genesis-state=/consensus/genesis.ssz
+      - --interop-eth1data-votes
+      - --interop-genesis-state=/consensus/genesis.ssz
       # The chain configuration file used for setting up Prysm
       - --chain-config-file=/consensus/config.yml
       - --config-file=/consensus/config.yml
